@@ -1,0 +1,20 @@
+EXPRESS
+    - npm init -y
+    - Preparar arquitectura
+    - Corremos endpoint inicial
+
+ROUTES
+    - en la carpeta de routes, creamos los archivos
+    - preparamos el CRUD
+
+VIEW ENGINE
+    - Configuramos en engine en app
+    - Preparamos los arhcivos de plantilla
+
+MONGO
+    - Hacemos los modelos
+    - Conectamos la DB
+
+INTEGRACION
+    - Las rutas hacen uso de los modelos
+    - ajustamos las plantillas con la data
