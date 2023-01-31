@@ -1,8 +1,10 @@
 import express from "express";
 import handlebars from "express-handlebars"
 import { Server } from "socket.io";
-import __dirname from "./utils.js"
 import mongoose from "mongoose";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import __dirname from "./utils.js"
 import run from "./run.js";
 
 const app = express()
@@ -14,8 +16,22 @@ app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname + "/views")
 app.set("view engine", "handlebars")
 
-mongoose.connect("mongodb://127.0.0.1:27017", {
-    dbName: "r2_project"
+//const MONGO_URI = "mongodb+srv://r2d2:TImCZj6dj0XAaHFN@cluster0.gl63h07.mongodb.net/?retryWrites=true&w=majority"
+const MONGO_URI = "mongodb://127.0.0.1:27017"
+const MONGO_DB_NAME = "r2_project"
+
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: MONGO_URI,
+        dbName: MONGO_DB_NAME
+    }),
+    secret: 'mysecret',
+    resave: true,
+    saveUninitialized: true
+}))
+
+mongoose.connect(MONGO_URI, {
+    dbName: MONGO_DB_NAME
 }, (error) => {
     if(error){
         console.log("DB No conected...")
