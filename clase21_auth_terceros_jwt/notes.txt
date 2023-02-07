@@ -1,0 +1,14 @@
+// http://127.0.0.1:8080/api/session/githubcallback
+/**
+ * 
+ * Owned by: @arturoverbel
+
+App ID: 290916
+
+Client ID: Iv1.fcb7e1c55ccfd975
+https://github.com/apps/myapp32210
+b9f1c68f0437f7becdd4c1c68fe2a2af2ad36c22
+MyApp32210
+
+ * 
+ */
