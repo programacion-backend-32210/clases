@@ -5,6 +5,7 @@ import passport from 'passport'
 import handlebars from 'express-handlebars'
 
 import sessionRouter from './routes/session.router.js'
+import jwtRouter from './routes/jwt.routes.js'
 import initializePassport from './config/passport.config.js'
 import __dirname from './utils.js'
 
@@ -30,6 +31,7 @@ app.use(passport.session())
 
 
 app.use('/api/session', sessionRouter)
+app.use('/jwt', jwtRouter)
 
 app.get('/', (req, res) => res.send("HOME"))
 
