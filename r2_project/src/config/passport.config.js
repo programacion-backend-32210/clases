@@ -1,9 +1,14 @@
 import passport from "passport";
 import local from "passport-local"
+import passport_jwt from 'passport-jwt'
 import UserModel from "../dao/models/user.model.js";
-import { createHash, isValidPassword } from '../utils.js'
+import { createHash, isValidPassword, generateToken, extractCookie } from '../utils.js'
+import { JWT_PRIVATE_KEY } from './credentials.js'
 
 const LocalStrategy = local.Strategy
+const JWTStrategy = passport_jwt.Strategy
+const ExtractJWT = passport_jwt.ExtractJwt
+
 const initializePassport = () => {
 
     passport.use('register', new LocalStrategy({
@@ -40,7 +45,7 @@ const initializePassport = () => {
         usernameField: 'email'
     }, async (username, password, done) => {
         try {
-            const user = await UserModel.findOne({email: username})
+            const user = await UserModel.findOne({email: username}).lean().exec()
             if(!user) {
                 console.log("User dont exist");
                 return done(null, user)
@@ -48,10 +53,20 @@ const initializePassport = () => {
 
             if(!isValidPassword(user, password)) return done(null, false)
 
+            const token = generateToken(user)
+            user.token = token
+
             return done(null, user)
         } catch (error) {
             
         }
+    }))
+
+    passport.use('jwt', new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([extractCookie]),
+        secretOrKey: JWT_PRIVATE_KEY
+    }, async(jwt_payload, done) => {
+        done(null, jwt_payload)
     }))
 
     passport.serializeUser((user, done) => {
