@@ -4,7 +4,7 @@ import chatRouter from "./routes/chat.router.js"
 import messagesModel from "./dao/models/messages.model.js";
 import productViewsRouter from './routes/products.views.router.js'
 import sessionRouter from './routes/session.router.js'
-import { passportCall } from "./utils.js";
+import { passportCall, handlePolicies } from "./utils.js";
 
 
 const run = (socketServer, app) => {
@@ -13,7 +13,7 @@ const run = (socketServer, app) => {
         next()
     })
 
-    app.use("/products", passportCall('jwt'), productViewsRouter)
+    app.use("/products", passportCall('jwt'), handlePolicies(['ADMIN']), productViewsRouter)
     app.use("/session", sessionRouter)
 
 
@@ -21,6 +21,11 @@ const run = (socketServer, app) => {
     app.use("/api/carts", cartRouter)
     app.use("/api/chat", chatRouter)
 
+    app.use("/", passportCall('jwt'), (req, res) => {
+        const user = req.user || null
+        console.log(user);
+        res.render("index", { user })
+    })
 
     socketServer.on("connection", socket => {
         console.log("New client connected")
@@ -31,7 +36,7 @@ const run = (socketServer, app) => {
         })
     })
 
-    app.use("/", (req, res) => res.send("HOME"))
+    
 
 }
 

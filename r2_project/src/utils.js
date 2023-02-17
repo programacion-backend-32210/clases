@@ -32,10 +32,25 @@ export const passportCall = (strategy) => {
     return async (req, res, next) => {
         passport.authenticate(strategy, function(err, user, info) {
             if(err) return next(err)
-            if(!user) return res.status(401).render('errors/base', {error: info.messages ? info.messages : info.toString() })
+            if(!user) {
+                //return res.status(401).render('errors/base', {error: info.messages ? info.messages : info.toString())
+                return next()
+            }
 
             req.user = user
             next()
         })(req, res, next)
     }
+}
+
+export const handlePolicies = policies => (req, res, next) => {
+    const user = req.user || null
+    
+    if(policies.includes('ADMIN')) {
+        if(!user) {
+            return res.status(403).render('errors/base', {error: 'Need auth'})
+        }
+    }
+
+    return next()
 }

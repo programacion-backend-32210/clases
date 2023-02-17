@@ -1,4 +1,4 @@
-import {Router} from "express"
+import { Router } from "express"
 import productModel from "../dao/models/products.model.js"
 
 const router = Router()
@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
     const sortQueryOrder = req.query?.sortorder || 'desc'
 
     const search = {}
-    if(filter) {
+    if (filter) {
         search.title = filter
     }
     const sort = {}
@@ -21,19 +21,26 @@ router.get("/", async (req, res) => {
     }
 
     const options = {
-        limit, 
-        page, 
+        limit,
+        page,
         sort,
         lean: true
     }
-    
+
     const data = await productModel.paginate(search, options)
     //console.log(JSON.stringify(data, null, 2, '\t'));
 
     const user = req.user.user
-    console.log(user);
 
-    res.render('products', { data, user })
+    const front_pagination = []
+    for (let i = 1; i <= data.totalPages; i++) {
+        front_pagination.push({
+            page: i,
+            active: i == data.page
+        })
+    }
+
+    res.render('products', { data, user, front_pagination })
 })
 
 export default router

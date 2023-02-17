@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="card-header">
+    Products
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Lista de Productos</h5>
+    <p class="card-text">Por desarrollar</p>
+
+    {{#if user}}
+        <a href="/products" class="btn btn-primary">Mostrar Productos</a>
+    {{else}}
+        <a href="/session/login" class="btn btn-primary">Iniciar Session</a>
+    {{/if}}
+
+  </div>
+</div>
