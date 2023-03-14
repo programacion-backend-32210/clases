@@ -1,12 +1,23 @@
+import User from '../dao/classes/users.dao.js'
+
+const userService = new User()
+
 export const getUsers = async(req, res) => {
-    res.send({status: 'success', result: [] })
+    const result = await userService.getUsers()
+    res.send({status: 'success', result })
 }
 
 export const getUserByID = async(req, res) => {
-    res.send({status: 'success', result: {} })
+    const { uid } = req.params
+    const user = await userService.getUserByID(uid)
+    
+    res.send({status: 'success', result: user })
 }
 
 export const createUser = async(req, res) => {
-    res.send({status: 'success', result: {} })
+    const user = req.body
+    const result = await userService.saveUser(user)
+
+    res.send({status: 'success', result })
 }
 
