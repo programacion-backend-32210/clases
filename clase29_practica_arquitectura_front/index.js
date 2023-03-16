@@ -5,7 +5,7 @@ fetch('http://127.0.0.1:8080/api/orders')
 
         console.log(json)
 
-        const fragment = document.createDocumentFragment()
+        const fragment = documeznt.createDocumentFragment()
 
         json.result.forEach(order => {
             const div = document.createElement('div')
