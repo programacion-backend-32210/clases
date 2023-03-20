@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { JWT_COOKIE_NAME } from "../config/credentials.js";
+import config from "../config/config.js";
 
 const router = Router()
 
@@ -29,7 +29,7 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/sessio
         return res.status(400).send({ status: "error", error: "Invalid credentiales" })
     }
 
-    res.cookie(JWT_COOKIE_NAME, req.user.token).redirect('/products')
+    res.cookie(config.jwtCookieName, req.user.token).redirect('/products')
 })
 router.get('/faillogin', (req, res) => {
     res.send({error: "Fail Login"})
@@ -37,7 +37,7 @@ router.get('/faillogin', (req, res) => {
 
 // Cerrar Session
 router.get('/logout', (req, res) => {
-    res.clearCookie(JWT_COOKIE_NAME).redirect('/')
+    res.clearCookie(config.jwtCookieName).redirect('/')
 })
 
 

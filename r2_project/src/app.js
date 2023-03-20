@@ -21,10 +21,6 @@ app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname + "/views")
 app.set("view engine", "handlebars")
 
-//const MONGO_URI = "mongodb+srv://r2d2:TImCZj6dj0XAaHFN@cluster0.gl63h07.mongodb.net/?retryWrites=true&w=majority"
-const MONGO_URI = "mongodb://127.0.0.1:27017"
-const MONGO_DB_NAME = "r2_project"
-
 app.use(session({
     secret: 'mysecret',
     resave: false,
@@ -34,16 +30,8 @@ initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-mongoose.connect(MONGO_URI, {
-    dbName: MONGO_DB_NAME
-}, (error) => {
-    if(error){
-        console.log("DB No conected...")
-        return
-    }
-    const httpServer = app.listen(8080, () => console.log("Listening..."))
-    const socketServer = new Server(httpServer)
-    httpServer.on("error", (e) => console.log("ERROR: " + e))
+const httpServer = app.listen(8080, () => console.log("Listening..."))
+const socketServer = new Server(httpServer)
+httpServer.on("error", (e) => console.log("ERROR: " + e))
 
-    run(socketServer, app)
-})
+run(socketServer, app)

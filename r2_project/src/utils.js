@@ -6,7 +6,7 @@ import passport from 'passport'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-import { JWT_COOKIE_NAME, JWT_PRIVATE_KEY } from './config/credentials.js'
+import config from './config/config.js'
  
 export default __dirname
 
@@ -20,12 +20,12 @@ export const isValidPassword = (user, password) => {
 
 // JWT
 export const generateToken = user => {
-    const token = jwt.sign({user}, JWT_PRIVATE_KEY, {expiresIn: '24h'})
+    const token = jwt.sign({user}, config.jwtPrivateKey, {expiresIn: '24h'})
     return token
 }
 
 export const extractCookie = req => {
-    return (req && req.cookies) ? req.cookies[JWT_COOKIE_NAME] : null
+    return (req && req.cookies) ? req.cookies[config.jwtCookieName] : null
 }
 
 export const passportCall = (strategy) => {
