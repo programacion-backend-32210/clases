@@ -4,11 +4,32 @@ import { ProductService } from "../repository/index.js"
 const router = Router()
 
 router.get("/", async (req, res) => {
-    const products = await ProductService.get()
-    const limit = req.query.limit || 5
-    
-    res.json(products.slice(0, parseInt(limit)))
-    
+
+    const limit = req.query?.limit || 10
+    const page = req.query?.page || 1
+    const filter = req.query?.filter || ''
+    const sortQuery = req.query?.sort || ''
+    const sortQueryOrder = req.query?.sortorder || 'desc'
+
+    const search = {}
+    if (filter) {
+        search.title = filter
+    }
+    const sort = {}
+    if (sortQuery) {
+        sort[sortQuery] = sortQueryOrder
+    }
+
+    const options = {
+        limit,
+        page,
+        sort,
+        lean: true
+    }
+
+    const data = await ProductService.getPaginate(search, options)
+
+    res.json({ status: 'success', data })
 })
 
 

@@ -7,6 +7,7 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import initializePassport from "./config/passport.config.js";
+import cors from 'cors'
 
 import __dirname from "./utils.js"
 import run from "./run.js";
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + "/public"))
 app.use(cookieParser())
+app.use(cors())
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname + "/views")
 app.set("view engine", "handlebars")
