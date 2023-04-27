@@ -43,4 +43,12 @@ router.get("/", async (req, res) => {
     res.render('products', { data, user, front_pagination })
 })
 
+router.get("/ppp", async (req, res) => {
+
+    const user = req.user.user
+
+
+    res.render('products_2', { user })
+})
+
 export default router

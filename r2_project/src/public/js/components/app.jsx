@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+const useState = React.useState
+const useEffect = React.useEffect
+const useCallback = React.useCallback
 
 function App() {
 
@@ -6,16 +8,15 @@ function App() {
   const [page, setPage] = useState(1);
   
   const fetchData = useCallback(async() => {
-    const result = await fetch(`http://127.0.0.1:8080/api/products?page=${page}`).then(response => response.json())
+    const result = await fetch(`/api/products?page=${page}`).then(response => response.json())
 
     setData(result.data)
     setPage(result.data.page)
-    console.log(page)
   }, [page])
 
 
   useEffect(() => {
-    fetchData()
+    fetchData && fetchData()
   }, [fetchData])
 
 
@@ -57,7 +58,7 @@ function App() {
           data.hasPrevPage && <button className="page-link" onClick={() => setPage(page - 1)} >Anterior</button>
         }
 
-        {[...Array(data.totalPageItems)].map((x, i) => 
+        {[...Array(data.totalPages)].map((x, i) => 
           <button className="page-link" onClick={() => setPage(i + 1)} >{i + 1} </button>
         )}
 
@@ -68,5 +69,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
